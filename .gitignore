@@ -1,0 +1,7 @@
+enviroment/
+__pycache__/
+*.pyc
+*.pyo
+recordings/
+.DS_Store
+config.json

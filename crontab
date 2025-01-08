@@ -1,0 +1,2 @@
+# Run cleanup_old_files.py every day at midnight (00:00)
+*/2 * * * * root python3 /app/cleanup_old_files.py

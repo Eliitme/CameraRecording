@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  rtsp-recorder:
+    build: .
+    container_name: rtsp-recorder
+    volumes:
+      - D:\camera\recordings:/app/recordings # Mount volume for recordings
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+    ports:
+      - "8080:8080" # Optional, if you want to expose a web server for accessing the recordings
