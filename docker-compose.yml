@@ -23,7 +23,7 @@ services:
     environment:
       - FLASK_ENV=production
     networks:
-      -
+      - camera
   ui:
     container_name: ui
     build:
