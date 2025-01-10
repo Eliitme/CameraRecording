@@ -9,5 +9,35 @@ services:
     restart: unless-stopped
     environment:
       - FLASK_ENV=production
+    networks:
+      - camera
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: Flask.Dockerfile
+    container_name: flask-app
+    volumes:
+      - D:\camera\recordings:/app/recordings # Mount volume for recordings
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+    networks:
+      -
+  ui:
+    container_name: ui
+    build:
+      context: .
+      dockerfile: UI.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
     ports:
-      - "8080:8080" # Optional, if you want to expose a web server for accessing the recordings
+      - 3000:3000
+    networks:
+      - camera
+
+networks:
+  camera:
+    driver: bridge

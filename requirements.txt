@@ -1,3 +1,4 @@
 pyinstaller
 flask
 flask-restful
+flask-cors

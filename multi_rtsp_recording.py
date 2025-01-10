@@ -4,6 +4,7 @@ import time
 import datetime
 import threading
 import json
+from cleanup_old_files import delete_old_files
 
 def load_rtsp_urls(config_path='config.json'):
     with open(config_path, 'r') as config_file:
@@ -13,7 +14,7 @@ output_dir = "recordings"
 
 os.makedirs(output_dir, exist_ok=True)
 
-def record_stream(camera_name, rtsp_url, duration=60):
+def record_stream(camera_name, rtsp_url, duration=1800):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     currentday = datetime.datetime.now().strftime("%Y-%m-%d")
     os.makedirs(os.path.join(output_dir, currentday, camera_name), exist_ok=True)
@@ -37,7 +38,11 @@ def start_recording(rtsp_urls):
         thread = threading.Thread(target=record_stream, args=(camera_name, rtsp_url))
         threads.append(thread)
         thread.start()
-
+    
+    delete_thread = threading.Thread(target=delete_old_files)
+    threads.append(delete_thread)
+    delete_thread.start()
+    
     for thread in threads:
         thread.join()
 

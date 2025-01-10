@@ -1,5 +1,6 @@
 from flask import Flask, Response, request, send_file
 from flask_restful import Resource, Api
+from flask_cors import CORS, cross_origin
 
 import os
 import re
@@ -7,6 +8,8 @@ import re
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app) # allow CORS for all domains on all routes.
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def generate_tree(path):
     tree = {}
@@ -25,6 +28,7 @@ def generate_tree(path):
 
 
 class FileTree(Resource):
+    @cross_origin()
     def get(self):
         tree = generate_tree('recordings')
 

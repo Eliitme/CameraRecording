@@ -8,6 +8,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ffmpeg \
+    cron \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*  # Clean up to reduce image size
 
@@ -16,8 +17,6 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy only the necessary files (to keep image efficient)
-COPY multi_rtsp_recording.py /app/
-COPY cleanup_old_files.py /app/
 COPY flask_app.py /app/
 COPY config.json /app/
 
@@ -28,4 +27,4 @@ WORKDIR /app
 EXPOSE 8080
 
 # Set the command to run both the recording and cleanup scripts in parallel
-CMD ["bash", "-c", "python3 multi_rtsp_recording.py"]
+CMD ["bash", "-c", "python3 flask_app.py"]
